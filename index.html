@@ -109,21 +109,20 @@
                     <div class="bg-indigo-100 border-r-4 border-indigo-500 text-indigo-900 p-4 rounded-xl shadow-sm mb-6" role="alert">
                         <div class="flex items-center gap-2 mb-2">
                             <i data-lucide="trophy" class="w-6 h-6 text-indigo-600"></i>
-                            <p class="font-bold text-lg">עדכון שיאים (17.04):</p>
+                            <p class="font-bold text-lg">עדכון שיאים (20.04):</p>
                         </div>
                         <ul class="list-disc list-inside space-y-1 text-base">
-                             <li><strong>כתפיים בסמית' (אחורי):</strong> 25 ק"ג (כל צד) ל-6 חזרות! 🔥</li>
-                             <li><strong>פולי עליון (מכונה):</strong> 65 ק"ג ל-8 חזרות! 🔥</li>
-                             <li><strong>הרחקות בשכיבה:</strong> 15 ק"ג ל-7 חזרות! 🔥</li>
-                             <li><strong>פרפר קרוס:</strong> 12.5 ק"ג ל-8 חזרות! 🔥</li>
-                             <li><strong>מקבילים:</strong> 20 ק"ג ל-5 חזרות! 🔥</li>
+                             <li><strong>כפיפות ברכיים בשכיבה:</strong> 15 ק"ג ל-5 חזרות! 🔥</li>
+                             <li><strong>פשיטות ברכיים:</strong> 95 ק"ג ל-6 חזרות! 🔥</li>
+                             <li><strong>תאומים (לחיצת רגליים):</strong> 180 ק"ג ל-8 חזרות! 🔥</li>
+                             <li><strong>מקרבים:</strong> 75 ק"ג ל-6 חזרות! 🔥</li>
                         </ul>
                         <div class="mt-3 pt-3 border-t border-indigo-200">
-                            <p class="text-sm font-semibold mb-1 opacity-75">עדכונים קודמים (09.04):</p>
+                            <p class="text-sm font-semibold mb-1 opacity-75">עדכונים קודמים (17.04):</p>
                             <ul class="list-disc list-inside space-y-1 text-sm opacity-75">
-                                 <li>חזה עליון (משקולות): 32.5 ק"ג (כל יד) ל-7.</li>
-                                 <li>רומניאן דדליפט: 120 ק"ג ל-5.</li>
-                                 <li>סקוואט (סמית'): 50 ק"ג (כל צד) ל-7.</li>
+                                 <li>כתפיים בסמית' (אחורי): 25 ק"ג (כל צד) ל-6.</li>
+                                 <li>פולי עליון (מכונה): 65 ק"ג ל-8.</li>
+                                 <li>מקבילים: 20 ק"ג ל-5.</li>
                             </ul>
                         </div>
                     </div>
@@ -418,16 +417,19 @@
         lucide.createIcons();
 
         const allRecords = [
-            { name: 'כתפיים (סמית\' אחורי)', start: "22.5/צד x 5", record: '25/צד x 6', date: '17.04', isNew: true },
-            { name: 'פולי עליון (מכונה)', start: "45 x 6", record: '65 x 8', date: '17.04', isNew: true },
-            { name: 'הרחקות בשכיבה', start: "?", record: '15 x 7', date: '17.04', isNew: true },
-            { name: 'פרפר קרוס', start: "?", record: '12.5 x 8', date: '17.04', isNew: true },
-            { name: 'מקבילים', start: "-21 x 8", record: '20 x 5', date: '17.04', isNew: true },
+            { name: 'כפיפות ברכיים (שכיבה)', start: "11 x 6", record: '15 x 5', date: '20.04', isNew: true },
+            { name: 'פשיטות ברכיים', start: "67.5 x 8", record: '95 x 6', date: '20.04', isNew: true },
+            { name: 'תאומים (לחיצת רגליים)', start: "?", record: '180 x 8', date: '20.04', isNew: true },
+            { name: 'מקרבים', start: "?", record: '75 x 6', date: '20.04', isNew: true },
+            { name: 'כתפיים (סמית\' אחורי)', start: "22.5/צד x 5", record: '25/צד x 6', date: '17.04' },
+            { name: 'פולי עליון (מכונה)', start: "45 x 6", record: '65 x 8', date: '17.04' },
+            { name: 'הרחקות בשכיבה', start: "?", record: '15 x 7', date: '17.04' },
+            { name: 'פרפר קרוס', start: "?", record: '12.5 x 8', date: '17.04' },
+            { name: 'מקבילים', start: "-21 x 8", record: '20 x 5', date: '17.04' },
             { name: 'חזה עליון (משקולות)', start: "22.5 x 6", record: '32.5/יד x 7', date: '09.04' },
             { name: 'רומניאן דדליפט', start: "80 x 8", record: '120 x 5', date: '09.04' },
             { name: 'סקוואט (סמית\')', start: "?", record: '50/צד x 7', date: '09.04' },
             { name: 'לחיצת כתפיים (מכונה)', start: "?", record: '30 x 5', date: '09.04' },
-            { name: 'כפיפות ברכיים (שכיבה)', start: "11 x 6", record: '14 x 8', date: '09.04' },
             { name: 'לחיצת רגליים', start: "4.5 פ'", record: '255 x 6', date: '24.03' },
             { name: 'טיבר', start: "45 x 8", record: '60 x 5', date: '14.03' },
             { name: 'בולגרי סמית\'', start: "?", record: '25/צד x 6', date: '09.03' },
@@ -437,7 +439,6 @@
             { name: 'חתירה (מוט)', start: "55 x 6", record: '65 x 7', date: '14.02' },
             { name: 'חתירה רחבה', start: "40 x 10", record: '50 x 7', date: '30.01' },
             { name: 'הרחקות (אחורה)', start: "?", record: '10 x 10', date: '03.01' },
-            { name: 'פשיטות ברכיים', start: "67.5 x 8", record: '90 x 6', date: '18.10' },
             { name: 'תאומים', start: "40 x 6", record: '5 פלטות', date: '06.08' },
             { name: 'חזה עליון (סמית\')', start: "25 x 4", record: '35 x 5', date: '31.10' },
             { name: 'בנץ עליון', start: "60 x 5", record: '70 x 6', date: '03.10' },
@@ -708,14 +709,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-```
