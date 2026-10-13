@@ -327,13 +327,13 @@
                         </button>
                     </div>
                     
-                    <!-- Firebase Sync Indicator -->
+                    <!-- Sync Indicator -->
                     <div id="syncIndicator" class="bg-indigo-50/60 px-6 py-2.5 text-xs text-indigo-700 font-medium flex items-center justify-between border-b border-indigo-100/60">
                         <span class="flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse" id="syncDot"></span>
-                            <span id="syncText">מתחבר לענן...</span>
+                            <span class="w-2 h-2 rounded-full bg-emerald-400" id="syncDot"></span>
+                            <span id="syncText">מצב שמירה מקומית (פעיל)</span>
                         </span>
-                        <span id="userIdDisplay" class="font-mono opacity-60 text-[10px]"></span>
+                        <span id="userIdDisplay" class="font-mono opacity-60 text-[10px]">GitHub Pages Mode</span>
                     </div>
 
                     <div class="overflow-x-auto">
@@ -349,7 +349,7 @@
                             
                             <!-- אזור שיאים מותאמים אישית -->
                             <tbody id="customRecordsBody" class="divide-y divide-slate-50 bg-indigo-50/20">
-                                <!-- Records added via Firebase will go here -->
+                                <!-- Records added locally or from cloud will go here -->
                             </tbody>
 
                             <tbody class="divide-y divide-slate-50">
@@ -639,7 +639,7 @@
 
     </div>
 
-    <!-- Firebase SDKs via CDN (Compat version for standard scripts) -->
+    <!-- Firebase SDKs via CDN -->
     <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-compat.js"></script>
@@ -659,11 +659,17 @@
         let db = null;
         let auth = null;
         let currentUser = null;
+        let useCloud = false;
 
         if (Object.keys(firebaseConfig).length > 0) {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.firestore();
-            auth = firebase.auth();
+            try {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.firestore();
+                auth = firebase.auth();
+                useCloud = true;
+            } catch (err) {
+                console.warn("Firebase init skipped:", err);
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -674,25 +680,20 @@
 
             activeTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
-                    // Reset all tabs
                     activeTabs.forEach(t => {
                         t.classList.remove('bg-gradient-to-r', 'from-app-secondary', 'to-app-primary', 'text-white', 'shadow-md');
                         t.classList.add('bg-white', 'text-slate-600');
                     });
                     
-                    // Hide all panes
                     panes.forEach(p => p.classList.add('hidden'));
 
-                    // Activate clicked tab
                     tab.classList.remove('bg-white', 'text-slate-600');
                     tab.classList.add('bg-gradient-to-r', 'from-app-secondary', 'to-app-primary', 'text-white', 'shadow-md');
                     
-                    // Show target pane
                     const targetId = tab.getAttribute('data-target');
                     const targetPane = document.getElementById(targetId);
                     if(targetPane) targetPane.classList.remove('hidden');
                     
-                    // Center the clicked tab smoothly
                     tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
                 });
             });
@@ -731,7 +732,7 @@
 
             // --- Modal Helpers ---
             const openModal = () => {
-                if(prDateInput) prDateInput.valueAsDate = new Date(); // default to today
+                if(prDateInput) prDateInput.valueAsDate = new Date();
                 prModal.classList.remove('hidden');
                 prModal.classList.add('flex');
                 setTimeout(() => {
@@ -752,112 +753,127 @@
             if(openModalBtn) openModalBtn.addEventListener('click', openModal);
             if(closeModalIcon) closeModalIcon.addEventListener('click', closeModal);
             
-            // Close on outside click
             if(prModal) {
                 prModal.addEventListener('click', (e) => {
                     if(e.target === prModal) closeModal();
                 });
             }
 
-            // --- Firebase Initialization & Real-time Sync ---
-            async function initFirebase() {
-                if (!auth || !db) {
-                    if(syncDot) syncDot.classList.add('bg-rose-400');
-                    if(syncText) syncText.textContent = 'הגדרות ענן חסרות';
-                    return;
-                }
+            // --- Local Storage Fallback & Cloud Sync ---
+            const LOCAL_STORAGE_KEY = 'kevin_afek_custom_prs';
 
+            function getLocalRecords() {
                 try {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await auth.signInWithCustomToken(__initial_auth_token);
-                    } else {
-                        await auth.signInAnonymously();
-                    }
-                    
-                    currentUser = auth.currentUser;
-                    if (currentUser) {
-                        syncDot.classList.remove('bg-amber-400');
-                        syncDot.classList.add('bg-emerald-400');
-                        syncText.textContent = 'מחובר לענן (מסונכרן)';
-                        userIdDisplay.textContent = `ID: ${currentUser.uid.substring(0,6)}...`;
-                        
-                        setupFirestoreListener();
-                    }
-                } catch (error) {
-                    console.error("Auth error:", error);
-                    syncDot.classList.remove('bg-amber-400');
-                    syncDot.classList.add('bg-rose-400');
-                    syncText.textContent = 'שגיאת חיבור לענן';
+                    const data = localStorage.getItem(LOCAL_STORAGE_KEY);
+                    return data ? JSON.parse(data) : [];
+                } catch (e) {
+                    return [];
                 }
             }
 
-            function setupFirestoreListener() {
-                if (!currentUser || !db) return;
-                
-                // Firestore public data path for shared training records
-                const recordsRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('kevin_records');
-                
-                recordsRef.onSnapshot((snapshot) => {
-                    if (!customRecordsBody) return;
-                    customRecordsBody.innerHTML = '';
-                    const records = [];
-                    snapshot.forEach((docSnap) => {
-                        records.push({ id: docSnap.id, ...docSnap.data() });
-                    });
-                    
-                    // Sort locally by timestamp (newest first)
-                    records.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            function saveLocalRecords(records) {
+                try {
+                    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(records));
+                } catch (e) {
+                    console.error("Local storage error", e);
+                }
+            }
 
-                    if (records.length > 0) {
-                        const headerTr = document.createElement('tr');
-                        headerTr.className = 'bg-indigo-50/50 border-t border-indigo-100';
-                        headerTr.innerHTML = `<td colspan="4" class="px-6 py-3 text-xs font-black text-indigo-800 flex items-center gap-1.5"><i data-lucide="cloud-check" class="w-3.5 h-3.5"></i> שיאים חדשים (מסונכרנים מהענן)</td>`;
-                        customRecordsBody.appendChild(headerTr);
-                    }
+            function renderRecords(records) {
+                if (!customRecordsBody) return;
+                customRecordsBody.innerHTML = '';
 
-                    records.forEach(pr => {
-                        const tr = document.createElement('tr');
-                        tr.className = 'hover:bg-slate-50 transition-colors group border-b border-indigo-50/50 relative';
-                        tr.innerHTML = `
-                            <td class="px-6 py-4 font-semibold text-slate-800 flex items-center justify-between">
-                                <span class="flex items-center gap-2">
-                                    ${pr.name}
-                                </span>
-                                <button onclick="window.deletePR('${pr.id}')" class="text-slate-300 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity bg-white hover:bg-rose-50 p-1.5 rounded-lg border border-transparent hover:border-rose-100 shadow-sm" title="מחק רשומה">
-                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
-                                </button>
-                            </td>
-                            <td class="px-6 py-4 font-black text-app-primary" dir="ltr">${pr.weight}</td>
-                            <td class="px-6 py-4"><span class="bg-amber-100 text-amber-700 px-2 py-1 rounded-md text-[10px] uppercase font-black tracking-wider mr-2">חדש</span> ${pr.reps}</td>
-                            <td class="px-6 py-4 text-slate-500 font-medium">${pr.date}</td>
-                        `;
-                        customRecordsBody.appendChild(tr);
-                    });
-                    lucide.createIcons();
-                }, (error) => {
-                    console.error("Firestore error:", error);
+                // Sort newest first
+                records.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+                if (records.length > 0) {
+                    const headerTr = document.createElement('tr');
+                    headerTr.className = 'bg-indigo-50/50 border-t border-indigo-100';
+                    headerTr.innerHTML = `<td colspan="4" class="px-6 py-3 text-xs font-black text-indigo-800 flex items-center gap-1.5"><i data-lucide="award" class="w-3.5 h-3.5"></i> שיאים חדשים שהוזנו</td>`;
+                    customRecordsBody.appendChild(headerTr);
+                }
+
+                records.forEach(pr => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-slate-50 transition-colors group border-b border-indigo-50/50 relative';
+                    tr.innerHTML = `
+                        <td class="px-6 py-4 font-semibold text-slate-800 flex items-center justify-between">
+                            <span class="flex items-center gap-2">
+                                ${pr.name}
+                            </span>
+                            <button onclick="window.deleteRecord('${pr.id}')" class="text-slate-300 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity bg-white hover:bg-rose-50 p-1.5 rounded-lg border border-transparent hover:border-rose-100 shadow-sm" title="מחק רשומה">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </td>
+                        <td class="px-6 py-4 font-black text-app-primary" dir="ltr">${pr.weight}</td>
+                        <td class="px-6 py-4"><span class="bg-amber-100 text-amber-700 px-2 py-1 rounded-md text-[10px] uppercase font-black tracking-wider mr-2">חדש</span> ${pr.reps}</td>
+                        <td class="px-6 py-4 text-slate-500 font-medium">${pr.date}</td>
+                    `;
+                    customRecordsBody.appendChild(tr);
                 });
+                lucide.createIcons();
             }
 
-            window.deletePR = async function(id) {
-                if (!currentUser || !db) return;
-                try {
-                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('kevin_records').doc(id).delete();
-                    showToast('הרשומה נמחקה בהצלחה מהענן', true);
-                } catch (err) {
-                    console.error("Error deleting document: ", err);
-                    showToast('שגיאה במחיקת הרשומה', true);
+            // Delete global handler
+            window.deleteRecord = async function(id) {
+                if (useCloud && currentUser && db) {
+                    try {
+                        await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('kevin_records').doc(id).delete();
+                        showToast('הרשומה נמחקה מהענן בהצלחה', true);
+                        return;
+                    } catch (e) {
+                        console.warn("Cloud delete failed, deleting locally", e);
+                    }
                 }
+                
+                // Local deletion fallback
+                let records = getLocalRecords();
+                records = records.filter(r => r.id !== id);
+                saveLocalRecords(records);
+                renderRecords(records);
+                showToast('הרשומה נמחקה בהצלחה', true);
             };
+
+            async function initAppStorage() {
+                if (useCloud && auth && db) {
+                    try {
+                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                            await auth.signInWithCustomToken(__initial_auth_token);
+                        } else {
+                            await auth.signInAnonymously();
+                        }
+                        currentUser = auth.currentUser;
+                        if (currentUser) {
+                            syncDot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+                            syncText.textContent = 'מחובר לענן (מסונכרן)';
+                            userIdDisplay.textContent = `ID: ${currentUser.uid.substring(0,6)}...`;
+                            
+                            // Firestore live sync
+                            db.collection('artifacts').doc(appId).collection('public').doc('data').collection('kevin_records').onSnapshot((snapshot) => {
+                                const records = [];
+                                snapshot.forEach((docSnap) => {
+                                    records.push({ id: docSnap.id, ...docSnap.data() });
+                                });
+                                renderRecords(records);
+                            });
+                            return;
+                        }
+                    } catch (err) {
+                        console.warn("Firebase auth/conn failed, falling back to local storage", err);
+                    }
+                }
+
+                // Fallback mode (GitHub Pages / Local)
+                syncDot.className = 'w-2 h-2 rounded-full bg-indigo-400';
+                syncText.textContent = 'שמירה מקומית במכשיר (פעיל)';
+                userIdDisplay.textContent = 'מצב מקומי';
+                renderRecords(getLocalRecords());
+            }
 
             // Form Submit handler
             if(prForm) {
                 prForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
-                    if (!currentUser || !db) {
-                        showToast('טרם הושלם חיבור לענן, נסה שוב בעוד רגע', true);
-                        return;
-                    }
                     
                     const name = document.getElementById('prName').value;
                     const weight = document.getElementById('prWeight').value;
@@ -873,30 +889,46 @@
                     }
 
                     const newPR = {
+                        id: 'rec_' + Date.now() + Math.random().toString(36).substr(2, 5),
                         name,
                         weight,
                         reps,
                         date: formattedDate,
-                        createdAt: Date.now(),
-                        userId: currentUser.uid
+                        createdAt: Date.now()
                     };
 
-                    try {
-                        await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('kevin_records').add(newPR);
-                        closeModal();
-                        prForm.reset();
-                        showToast('השיא החדש נשמר ונוסף לענן בהצלחה!');
-                    } catch (err) {
-                        console.error("Error adding document: ", err);
-                        showToast('שגיאה בשמירת הנתונים לענן', true);
+                    if (useCloud && currentUser && db) {
+                        try {
+                            await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('kevin_records').add({
+                                name: newPR.name,
+                                weight: newPR.weight,
+                                reps: newPR.reps,
+                                date: newPR.date,
+                                createdAt: newPR.createdAt,
+                                userId: currentUser.uid
+                            });
+                            closeModal();
+                            prForm.reset();
+                            showToast('השיא החדש נשמר ונוסף לענן בהצלחה!');
+                            return;
+                        } catch (err) {
+                            console.warn("Cloud save failed, saving locally", err);
+                        }
                     }
+
+                    // Local save fallback
+                    const records = getLocalRecords();
+                    records.push(newPR);
+                    saveLocalRecords(records);
+                    renderRecords(records);
+                    closeModal();
+                    prForm.reset();
+                    showToast('השיא החדש נשמר בהצלחה במכשיר!');
                 });
             }
 
-            // Start Firebase Authentication and Connection
-            initFirebase();
+            initAppStorage();
 
         });
     </script>
 </body>
-</html>
