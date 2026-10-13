@@ -95,7 +95,6 @@
             </div>
         </header>
 
-        <!-- Navigation Tabs -->
         <nav class="mb-8 -mx-4 px-4 sm:mx-0 sm:px-0 relative">
             <!-- Fade masks -->
             <div class="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-[#f8fafc] to-transparent z-10 sm:hidden"></div>
@@ -118,7 +117,6 @@
             </div>
         </nav>
 
-        <!-- Tab Contents -->
         <main id="contentPanes" class="relative pb-10">
             
             <!-- 1. Profile / Info Tab -->
@@ -263,7 +261,7 @@
                                     <span class="font-semibold text-slate-600 bg-slate-50 px-2 py-1 rounded-lg">60 ק"ג x6</span>
                                 </div>
                                 <div class="flex justify-between items-center">
-                                    <span class="font-bold text-slate-700 flex items-center gap-1">שיא <span class="text-xs text-slate-400 font-normal">(14.09)</span></span>
+                                    <span class="font-bold text-slate-700 flex items-center gap-1">שיא <span class="text-xs text-slate-400 font-normal">(מעודכן)</span></span>
                                     <span class="font-black text-lg text-app-primary bg-indigo-50 px-2 py-1 rounded-lg">230 ק"ג x6</span>
                                 </div>
                             </div>
@@ -278,7 +276,7 @@
                                     <span class="font-semibold text-slate-600 bg-slate-50 px-2 py-1 rounded-lg">80 ק"ג x8</span>
                                 </div>
                                 <div class="flex justify-between items-center">
-                                    <span class="font-bold text-slate-700 flex items-center gap-1">שיא <span class="text-xs text-slate-400 font-normal">(14.09)</span></span>
+                                    <span class="font-bold text-slate-700 flex items-center gap-1">שיא <span class="text-xs text-slate-400 font-normal">(מעודכן)</span></span>
                                     <span class="font-black text-lg text-app-primary bg-indigo-50 px-2 py-1 rounded-lg">140 ק"ג x6</span>
                                 </div>
                             </div>
@@ -317,131 +315,143 @@
                     </div>
                 </div>
                 
-                <!-- Full Records Table -->
-                <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-                    <div class="p-6 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
-                        <h2 class="text-xl font-bold text-slate-800">כל השיאים המעודכנים</h2>
-                        <i data-lucide="list" class="text-slate-400"></i>
+                <!-- Full Records Table (Single, Simple Table) -->
+                <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden mt-8">
+                    <div class="p-4 sm:p-6 border-b border-slate-100 bg-slate-50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                            <i data-lucide="list-checks" class="w-5 h-5 text-app-primary"></i>
+                            טבלת שיאים ותוצאות מלאה
+                        </h2>
+                        <button id="openModalBtn" class="bg-gradient-to-r from-app-secondary to-app-primary text-white px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 hover:shadow-md transition-all w-full sm:w-auto justify-center group">
+                            <i data-lucide="plus" class="w-4 h-4 group-hover:rotate-90 transition-transform"></i> הוסף שיא חדש
+                        </button>
                     </div>
-                    <div class="overflow-x-auto max-h-[500px] overflow-y-auto">
-                        <table class="w-full text-sm text-right text-slate-600 relative">
-                            <thead class="text-xs text-slate-500 uppercase bg-slate-100 sticky top-0 z-10 shadow-sm">
+                    
+                    <!-- Firebase Sync Indicator -->
+                    <div id="syncIndicator" class="bg-indigo-50/60 px-6 py-2.5 text-xs text-indigo-700 font-medium flex items-center justify-between border-b border-indigo-100/60">
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse" id="syncDot"></span>
+                            <span id="syncText">מתחבר לענן...</span>
+                        </span>
+                        <span id="userIdDisplay" class="font-mono opacity-60 text-[10px]"></span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-right text-slate-600">
+                            <thead class="text-xs text-slate-500 uppercase bg-slate-50/50">
                                 <tr>
                                     <th scope="col" class="px-6 py-4 font-bold">תרגיל</th>
                                     <th scope="col" class="px-6 py-4 font-bold">משקל (ק"ג)</th>
-                                    <th scope="col" class="px-6 py-4 font-bold">חזרות</th>
+                                    <th scope="col" class="px-6 py-4 font-bold">חזרות / תוצאה</th>
+                                    <th scope="col" class="px-6 py-4 font-bold">תאריך שיא</th>
                                 </tr>
                             </thead>
+                            
+                            <!-- אזור שיאים מותאמים אישית -->
+                            <tbody id="customRecordsBody" class="divide-y divide-slate-50 bg-indigo-50/20">
+                                <!-- Records added via Firebase will go here -->
+                            </tbody>
+
                             <tbody class="divide-y divide-slate-50">
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">לחיצת חזה עליון (משקולות)</td><td class="px-6 py-3 font-bold text-app-primary">38 / יד</td><td class="px-6 py-3">5</td>
+                                
+                                <!-- רגליים -->
+                                <tr class="bg-slate-50"><td colspan="4" class="px-6 py-2 text-xs font-bold text-slate-400">פלג גוף תחתון</td></tr>
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-slate-800">האק סקוואט</td>
+                                    <td class="px-6 py-4 font-bold text-app-primary" dir="ltr">230</td>
+                                    <td class="px-6 py-4"><span class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-xs font-bold mr-2">PR</span> 6 חזרות</td>
+                                    <td class="px-6 py-4 text-slate-400">14.09.2026</td>
                                 </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">לחיצת חזה (משקולות)</td><td class="px-6 py-3 font-bold text-app-primary">35</td><td class="px-6 py-3">8</td>
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-slate-800">רומני דדליפט</td>
+                                    <td class="px-6 py-4 font-bold text-app-primary" dir="ltr">140</td>
+                                    <td class="px-6 py-4"><span class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-xs font-bold mr-2">PR</span> 6 חזרות</td>
+                                    <td class="px-6 py-4 text-slate-400">14.09.2026</td>
                                 </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">לחיצת חזה נטרלי</td><td class="px-6 py-3 font-bold text-slate-700">70</td><td class="px-6 py-3">8</td>
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-slate-800">סקוואט בולגרי</td>
+                                    <td class="px-6 py-4 font-bold text-slate-700" dir="ltr">27.5</td>
+                                    <td class="px-6 py-4"><span class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-xs font-bold mr-2">PR</span> 8 חזרות</td>
+                                    <td class="px-6 py-4 text-slate-400">14.09.2026</td>
                                 </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">לחיצת חזה סמית' עליון</td><td class="px-6 py-3 font-bold text-app-primary">37.5</td><td class="px-6 py-3">4</td>
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-slate-800">לחיצת רגליים</td>
+                                    <td class="px-6 py-4 font-bold text-app-primary" dir="ltr">285</td>
+                                    <td class="px-6 py-4"><span class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-xs font-bold mr-2">PR</span> 6 חזרות</td>
+                                    <td class="px-6 py-4 text-slate-400">17.08.2026</td>
                                 </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">לחיצת חזה סמית'</td><td class="px-6 py-3 font-bold text-app-primary">37.5</td><td class="px-6 py-3">4</td>
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-slate-800">בלט סקוואט</td>
+                                    <td class="px-6 py-4 font-bold text-slate-700" dir="ltr">175</td>
+                                    <td class="px-6 py-4"><span class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-xs font-bold mr-2">PR</span> 4 חזרות</td>
+                                    <td class="px-6 py-4 text-slate-400">20.07.2026</td>
                                 </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">רומניאן דדליפט</td><td class="px-6 py-3 font-bold text-app-primary">140</td><td class="px-6 py-3">6</td>
+                                
+                                <!-- חזה וכתפיים -->
+                                <tr class="bg-slate-50"><td colspan="4" class="px-6 py-2 text-xs font-bold text-slate-400">חזה וכתפיים</td></tr>
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-slate-800">לחיצת חזה עליון (משקולות)</td>
+                                    <td class="px-6 py-4 font-bold text-app-primary" dir="ltr">38</td>
+                                    <td class="px-6 py-4"><span class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-xs font-bold mr-2">PR</span> 5 חזרות</td>
+                                    <td class="px-6 py-4 text-slate-400">20.07.2026</td>
                                 </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">האק סקוואט</td><td class="px-6 py-3 font-bold text-slate-700">230</td><td class="px-6 py-3">6</td>
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-slate-800">לחיצת חזה סמית</td>
+                                    <td class="px-6 py-4 font-bold text-slate-700" dir="ltr">37.5</td>
+                                    <td class="px-6 py-4"><span class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-xs font-bold mr-2">PR</span> 4 חזרות</td>
+                                    <td class="px-6 py-4 text-slate-400">25.08.2026</td>
                                 </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">בלט סקוואט</td><td class="px-6 py-3 font-bold text-slate-700">175</td><td class="px-6 py-3">4</td>
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-slate-800">מקבילים</td>
+                                    <td class="px-6 py-4 font-bold text-app-primary" dir="ltr">35</td>
+                                    <td class="px-6 py-4"><span class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-xs font-bold mr-2">PR</span> 4 חזרות</td>
+                                    <td class="px-6 py-4 text-slate-400">20.07.2026</td>
                                 </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">סקוואט (סמית')</td><td class="px-6 py-3 font-bold text-slate-700">55 / צד</td><td class="px-6 py-3">5</td>
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-slate-800">פרפר מכונה</td>
+                                    <td class="px-6 py-4 font-bold text-slate-700" dir="ltr">31</td>
+                                    <td class="px-6 py-4"><span class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-xs font-bold mr-2">PR</span> 8 חזרות</td>
+                                    <td class="px-6 py-4 text-slate-400">31.08.2026</td>
                                 </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">מקבילים</td><td class="px-6 py-3 font-bold text-app-primary">35</td><td class="px-6 py-3">4</td>
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-slate-800">לחיצת כתפיים מכונה</td>
+                                    <td class="px-6 py-4 font-bold text-slate-700" dir="ltr">50</td>
+                                    <td class="px-6 py-4"><span class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-xs font-bold mr-2">PR</span> 5 חזרות</td>
+                                    <td class="px-6 py-4 text-slate-400">03.08.2026</td>
                                 </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">מתח עם משקל</td><td class="px-6 py-3 font-bold text-app-primary">10</td><td class="px-6 py-3">5</td>
+
+                                <!-- גב וידיים -->
+                                <tr class="bg-slate-50"><td colspan="4" class="px-6 py-2 text-xs font-bold text-slate-400">גב וידיים</td></tr>
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-slate-800">מתח משקל</td>
+                                    <td class="px-6 py-4 font-bold text-slate-700" dir="ltr">10</td>
+                                    <td class="px-6 py-4">5 חזרות</td>
+                                    <td class="px-6 py-4 text-slate-400">07.09.2026</td>
                                 </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">לחיצת כתפיים מאחורי הראש (סמית')</td><td class="px-6 py-3 font-bold text-slate-700">26.25 / צד</td><td class="px-6 py-3">5</td>
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-slate-800">חתירה (מוט)</td>
+                                    <td class="px-6 py-4 font-bold text-slate-700" dir="ltr">72.5</td>
+                                    <td class="px-6 py-4">5 חזרות</td>
+                                    <td class="px-6 py-4 text-slate-400">26.07.2026</td>
                                 </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">כפיפות ברכיים (שכיבה)</td><td class="px-6 py-3 font-bold text-app-primary">16</td><td class="px-6 py-3">5</td>
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-slate-800">כומר מכונה (יד קדמית)</td>
+                                    <td class="px-6 py-4 font-bold text-app-primary" dir="ltr">40</td>
+                                    <td class="px-6 py-4"><span class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-xs font-bold mr-2">PR</span> 6 חזרות</td>
+                                    <td class="px-6 py-4 text-slate-400">07.09.2026</td>
                                 </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">כפיפות ברכיים (ישיבה)</td><td class="px-6 py-3 font-bold text-app-primary">60</td><td class="px-6 py-3">4</td>
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-slate-800">פשיטה מאחורי הראש חבל</td>
+                                    <td class="px-6 py-4 font-bold text-slate-700" dir="ltr">22.5</td>
+                                    <td class="px-6 py-4"><span class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-xs font-bold mr-2">PR</span> 10 חזרות</td>
+                                    <td class="px-6 py-4 text-slate-400">20.07.2026</td>
                                 </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">פשיטות ברכיים</td><td class="px-6 py-3 font-bold text-app-primary">100</td><td class="px-6 py-3">6</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">היפטראסט</td><td class="px-6 py-3 font-bold text-slate-700">35</td><td class="px-6 py-3">5</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">תאומים (לחיצת רגליים)</td><td class="px-6 py-3 font-bold text-slate-700">180</td><td class="px-6 py-3">8</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">תאומים (מכונה/כללי)</td><td class="px-6 py-3 font-bold text-slate-700">5 פלטות</td><td class="px-6 py-3">-</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">מקרבים</td><td class="px-6 py-3 font-bold text-slate-700">75</td><td class="px-6 py-3">6</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">פולי עליון (מכונה)</td><td class="px-6 py-3 font-bold text-slate-700">65</td><td class="px-6 py-3">8</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">הרחקות בשכיבה</td><td class="px-6 py-3 font-bold text-app-primary">20</td><td class="px-6 py-3">7</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">לחיצת כתפיים (מכונה)</td><td class="px-6 py-3 font-bold text-slate-700">50</td><td class="px-6 py-3">5</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">טיבר</td><td class="px-6 py-3 font-bold text-slate-700">60</td><td class="px-6 py-3">5</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">בולגרי סמית'</td><td class="px-6 py-3 font-bold text-slate-700">27.5 / צד</td><td class="px-6 py-3">8</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">כיסא כומר (מכונה)</td><td class="px-6 py-3 font-bold text-app-primary">40</td><td class="px-6 py-3">6</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">פשיטה מאחורי הראש (חבל)</td><td class="px-6 py-3 font-bold text-app-primary">22.5</td><td class="px-6 py-3">10</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">חתירה (מוט)</td><td class="px-6 py-3 font-bold text-app-primary">80</td><td class="px-6 py-3">4</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">חתירה רחבה</td><td class="px-6 py-3 font-bold text-slate-700">50</td><td class="px-6 py-3">7</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">הרחקות (אחורה)</td><td class="px-6 py-3 font-bold text-slate-700">10</td><td class="px-6 py-3">10</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">בנץ עליון</td><td class="px-6 py-3 font-bold text-slate-700">70</td><td class="px-6 py-3">6</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">לחיצת כתפיים (חופשי)</td><td class="px-6 py-3 font-bold text-slate-700">45</td><td class="px-6 py-3">5</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">הרחקת כתפיים / פולי</td><td class="px-6 py-3 font-bold text-slate-700">15</td><td class="px-6 py-3">8</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">רומני (משקולות)</td><td class="px-6 py-3 font-bold text-slate-700">30</td><td class="px-6 py-3">8</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">פרפר מכונה</td><td class="px-6 py-3 font-bold text-app-primary">31</td><td class="px-6 py-3">9</td>
-                                </tr>
-                                <tr class="hover:bg-slate-50/50">
-                                    <td class="px-6 py-3 font-semibold text-slate-800">לחיצת רגליים</td><td class="px-6 py-3 font-bold text-app-primary">285</td><td class="px-6 py-3">6</td>
-                                </tr>
+                                
                             </tbody>
                         </table>
                     </div>
                 </div>
+
             </div>
 
             <!-- 3. Training Plan Tab -->
@@ -580,12 +590,82 @@
 
         </main>
         
+        <!-- Add PR Modal Overlay -->
+        <div id="prModal" class="fixed inset-0 bg-slate-900/60 z-50 hidden flex-col items-center justify-center p-4 backdrop-blur-sm opacity-0 transition-opacity duration-300">
+            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6 transform scale-95 transition-transform duration-300" id="prModalContent">
+                <div class="flex justify-between items-center mb-5">
+                    <h3 class="text-xl font-black text-slate-800 flex items-center gap-2">
+                        <i data-lucide="medal" class="text-amber-500 w-6 h-6"></i> העלאת תוצאה חדשה
+                    </h3>
+                    <button type="button" id="closeModalIcon" class="text-slate-400 hover:text-slate-600 bg-slate-100 hover:bg-slate-200 w-8 h-8 rounded-full flex items-center justify-center transition-colors">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                
+                <form id="prForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">שם התרגיל <span class="text-red-500">*</span></label>
+                        <input type="text" id="prName" required placeholder="לדוגמה: בנץ' פרס" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-app-primary focus:border-app-primary outline-none transition-all placeholder:text-slate-400 text-slate-700 font-medium">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1.5">משקל (ק"ג) <span class="text-red-500">*</span></label>
+                            <input type="number" step="0.5" id="prWeight" required placeholder="0.0" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-app-primary focus:border-app-primary outline-none transition-all text-slate-700 font-bold" dir="ltr">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1.5">חזרות <span class="text-red-500">*</span></label>
+                            <input type="text" id="prReps" required placeholder="לדוגמה: 5" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-app-primary focus:border-app-primary outline-none transition-all text-slate-700 font-bold">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-1.5">תאריך <span class="text-red-500">*</span></label>
+                        <input type="date" id="prDate" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-app-primary focus:border-app-primary outline-none transition-all text-slate-700 font-medium">
+                    </div>
+                    
+                    <div class="pt-2">
+                        <button type="submit" class="w-full bg-gradient-to-r from-app-secondary to-app-primary text-white font-black py-3.5 rounded-xl hover:shadow-lg hover:-translate-y-0.5 transition-all flex justify-center items-center gap-2">
+                            <i data-lucide="save" class="w-5 h-5"></i> שמור בטבלה
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-emerald-500 text-white px-5 py-3 rounded-2xl shadow-[0_8px_30px_rgb(16,185,129,0.3)] font-bold flex items-center gap-3 transition-all duration-300 opacity-0 translate-y-10 z-[60] pointer-events-none">
+            <div class="bg-white/20 rounded-full p-1"><i data-lucide="check" class="w-4 h-4" id="toastIcon"></i></div>
+            <span id="toastMsg">הפעולה בוצעה בהצלחה!</span>
+        </div>
+
     </div>
+
+    <!-- Firebase SDKs via CDN (Compat version for standard scripts) -->
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-compat.js"></script>
 
     <script>
         // Initialize Icons
         lucide.createIcons();
         
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'kevin-afek-tracker';
+        let firebaseConfig = {};
+        try {
+            firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        } catch (e) {
+            console.error("Firebase config parse error", e);
+        }
+
+        let db = null;
+        let auth = null;
+        let currentUser = null;
+
+        if (Object.keys(firebaseConfig).length > 0) {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            auth = firebase.auth();
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             
             // --- TAB LOGIC ---
@@ -616,6 +696,205 @@
                     tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
                 });
             });
+
+            const prModal = document.getElementById('prModal');
+            const prModalContent = document.getElementById('prModalContent');
+            const openModalBtn = document.getElementById('openModalBtn');
+            const closeModalIcon = document.getElementById('closeModalIcon');
+            const prForm = document.getElementById('prForm');
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            const toastIcon = document.getElementById('toastIcon');
+            const prDateInput = document.getElementById('prDate');
+            const customRecordsBody = document.getElementById('customRecordsBody');
+            
+            const syncDot = document.getElementById('syncDot');
+            const syncText = document.getElementById('syncText');
+            const userIdDisplay = document.getElementById('userIdDisplay');
+
+            // --- Toast Helper ---
+            function showToast(message, isError = false) {
+                toastMsg.textContent = message;
+                toast.classList.remove('bg-emerald-500', 'bg-rose-500');
+                toast.classList.add(isError ? 'bg-rose-500' : 'bg-emerald-500');
+                toastIcon.setAttribute('data-lucide', isError ? 'trash-2' : 'check');
+                lucide.createIcons();
+                
+                toast.classList.remove('opacity-0', 'translate-y-10');
+                toast.classList.add('opacity-100', 'translate-y-0');
+                
+                setTimeout(() => {
+                    toast.classList.remove('opacity-100', 'translate-y-0');
+                    toast.classList.add('opacity-0', 'translate-y-10');
+                }, 3000);
+            }
+
+            // --- Modal Helpers ---
+            const openModal = () => {
+                if(prDateInput) prDateInput.valueAsDate = new Date(); // default to today
+                prModal.classList.remove('hidden');
+                prModal.classList.add('flex');
+                setTimeout(() => {
+                    prModal.classList.remove('opacity-0');
+                    prModalContent.classList.remove('scale-95');
+                }, 10);
+            };
+
+            const closeModal = () => {
+                prModal.classList.add('opacity-0');
+                prModalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    prModal.classList.add('hidden');
+                    prModal.classList.remove('flex');
+                }, 300);
+            };
+
+            if(openModalBtn) openModalBtn.addEventListener('click', openModal);
+            if(closeModalIcon) closeModalIcon.addEventListener('click', closeModal);
+            
+            // Close on outside click
+            if(prModal) {
+                prModal.addEventListener('click', (e) => {
+                    if(e.target === prModal) closeModal();
+                });
+            }
+
+            // --- Firebase Initialization & Real-time Sync ---
+            async function initFirebase() {
+                if (!auth || !db) {
+                    if(syncDot) syncDot.classList.add('bg-rose-400');
+                    if(syncText) syncText.textContent = 'הגדרות ענן חסרות';
+                    return;
+                }
+
+                try {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await auth.signInWithCustomToken(__initial_auth_token);
+                    } else {
+                        await auth.signInAnonymously();
+                    }
+                    
+                    currentUser = auth.currentUser;
+                    if (currentUser) {
+                        syncDot.classList.remove('bg-amber-400');
+                        syncDot.classList.add('bg-emerald-400');
+                        syncText.textContent = 'מחובר לענן (מסונכרן)';
+                        userIdDisplay.textContent = `ID: ${currentUser.uid.substring(0,6)}...`;
+                        
+                        setupFirestoreListener();
+                    }
+                } catch (error) {
+                    console.error("Auth error:", error);
+                    syncDot.classList.remove('bg-amber-400');
+                    syncDot.classList.add('bg-rose-400');
+                    syncText.textContent = 'שגיאת חיבור לענן';
+                }
+            }
+
+            function setupFirestoreListener() {
+                if (!currentUser || !db) return;
+                
+                // Firestore public data path for shared training records
+                const recordsRef = db.collection('artifacts').doc(appId).collection('public').doc('data').collection('kevin_records');
+                
+                recordsRef.onSnapshot((snapshot) => {
+                    if (!customRecordsBody) return;
+                    customRecordsBody.innerHTML = '';
+                    const records = [];
+                    snapshot.forEach((docSnap) => {
+                        records.push({ id: docSnap.id, ...docSnap.data() });
+                    });
+                    
+                    // Sort locally by timestamp (newest first)
+                    records.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+                    if (records.length > 0) {
+                        const headerTr = document.createElement('tr');
+                        headerTr.className = 'bg-indigo-50/50 border-t border-indigo-100';
+                        headerTr.innerHTML = `<td colspan="4" class="px-6 py-3 text-xs font-black text-indigo-800 flex items-center gap-1.5"><i data-lucide="cloud-check" class="w-3.5 h-3.5"></i> שיאים חדשים (מסונכרנים מהענן)</td>`;
+                        customRecordsBody.appendChild(headerTr);
+                    }
+
+                    records.forEach(pr => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'hover:bg-slate-50 transition-colors group border-b border-indigo-50/50 relative';
+                        tr.innerHTML = `
+                            <td class="px-6 py-4 font-semibold text-slate-800 flex items-center justify-between">
+                                <span class="flex items-center gap-2">
+                                    ${pr.name}
+                                </span>
+                                <button onclick="window.deletePR('${pr.id}')" class="text-slate-300 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity bg-white hover:bg-rose-50 p-1.5 rounded-lg border border-transparent hover:border-rose-100 shadow-sm" title="מחק רשומה">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </button>
+                            </td>
+                            <td class="px-6 py-4 font-black text-app-primary" dir="ltr">${pr.weight}</td>
+                            <td class="px-6 py-4"><span class="bg-amber-100 text-amber-700 px-2 py-1 rounded-md text-[10px] uppercase font-black tracking-wider mr-2">חדש</span> ${pr.reps}</td>
+                            <td class="px-6 py-4 text-slate-500 font-medium">${pr.date}</td>
+                        `;
+                        customRecordsBody.appendChild(tr);
+                    });
+                    lucide.createIcons();
+                }, (error) => {
+                    console.error("Firestore error:", error);
+                });
+            }
+
+            window.deletePR = async function(id) {
+                if (!currentUser || !db) return;
+                try {
+                    await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('kevin_records').doc(id).delete();
+                    showToast('הרשומה נמחקה בהצלחה מהענן', true);
+                } catch (err) {
+                    console.error("Error deleting document: ", err);
+                    showToast('שגיאה במחיקת הרשומה', true);
+                }
+            };
+
+            // Form Submit handler
+            if(prForm) {
+                prForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    if (!currentUser || !db) {
+                        showToast('טרם הושלם חיבור לענן, נסה שוב בעוד רגע', true);
+                        return;
+                    }
+                    
+                    const name = document.getElementById('prName').value;
+                    const weight = document.getElementById('prWeight').value;
+                    const reps = document.getElementById('prReps').value;
+                    
+                    const dateRaw = document.getElementById('prDate').value;
+                    let formattedDate = "";
+                    if(dateRaw && dateRaw.includes('-')) {
+                        const [year, month, day] = dateRaw.split('-');
+                        formattedDate = `${day}.${month}.${year}`;
+                    } else {
+                        formattedDate = dateRaw || "היום";
+                    }
+
+                    const newPR = {
+                        name,
+                        weight,
+                        reps,
+                        date: formattedDate,
+                        createdAt: Date.now(),
+                        userId: currentUser.uid
+                    };
+
+                    try {
+                        await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('kevin_records').add(newPR);
+                        closeModal();
+                        prForm.reset();
+                        showToast('השיא החדש נשמר ונוסף לענן בהצלחה!');
+                    } catch (err) {
+                        console.error("Error adding document: ", err);
+                        showToast('שגיאה בשמירת הנתונים לענן', true);
+                    }
+                });
+            }
+
+            // Start Firebase Authentication and Connection
+            initFirebase();
 
         });
     </script>
