@@ -106,6 +106,9 @@
                 <button data-target="profileContent" class="nav-tab active-tab snap-center shrink-0 px-6 py-3 rounded-2xl bg-gradient-to-r from-app-secondary to-app-primary text-white font-bold whitespace-nowrap shadow-md transition-all flex items-center gap-2">
                     <i data-lucide="user-circle" class="w-5 h-5"></i> פרטים אישיים
                 </button>
+                <button data-target="nutritionContent" class="nav-tab active-tab snap-center shrink-0 px-6 py-3 rounded-2xl bg-white text-slate-600 font-bold whitespace-nowrap hover:bg-slate-50 transition-all border border-slate-200 flex items-center gap-2">
+                    <i data-lucide="utensils" class="w-5 h-5"></i> תפריט תזונה
+                </button>
                 <button data-target="progressContent" class="nav-tab active-tab snap-center shrink-0 px-6 py-3 rounded-2xl bg-white text-slate-600 font-bold whitespace-nowrap hover:bg-slate-50 transition-all border border-slate-200 flex items-center gap-2">
                     <i data-lucide="bar-chart-2" class="w-5 h-5"></i> דוח התקדמות
                 </button>
@@ -242,6 +245,201 @@
                         </div>
                     </div>
                     
+                </div>
+
+            </div>
+
+            <!-- NEW: Nutrition Tab -->
+            <div id="nutritionContent" class="tab-pane hidden animate-fade-in space-y-6">
+                <div class="flex items-center justify-between mb-2">
+                    <h2 class="text-2xl font-black text-slate-800">תוכנית תזונה יומית</h2>
+                    <span class="bg-emerald-100 text-emerald-700 text-sm font-bold px-3 py-1 rounded-full">חיטוב וירידה במשקל</span>
+                </div>
+
+                <!-- Strategy & Profile Overview -->
+                <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 sm:p-8">
+                    <div class="mb-4">
+                        <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-1">אסטרטגיה</h3>
+                        <p class="text-slate-700 font-medium text-lg leading-snug">גרעון קלורי מובהק להפחתת שומן, חלבון גבוה לשימור שריר, פחמימות לאנרגיה באימונים ושומן מינימלי.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-3 mt-4">
+                        <span class="inline-flex items-center gap-1.5 bg-slate-50 text-slate-600 text-sm px-3 py-1.5 rounded-xl border border-slate-100">
+                            <i data-lucide="user" class="w-4 h-4"></i> משקל בסיס: 105 ק"ג
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 bg-slate-50 text-slate-600 text-sm px-3 py-1.5 rounded-xl border border-slate-100">
+                            <i data-lucide="percent" class="w-4 h-4"></i> שומן מוערך: 25%-30%
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 bg-slate-50 text-slate-600 text-sm px-3 py-1.5 rounded-xl border border-slate-100">
+                            <i data-lucide="activity" class="w-4 h-4"></i> מסת גוף רזה: כ-74-79 ק"ג
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Macros Summary -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-indigo-50/50 rounded-2xl p-4 border border-indigo-100 flex flex-col items-center justify-center text-center">
+                        <span class="text-sm font-bold text-indigo-600 mb-1">קלוריות</span>
+                        <span class="text-3xl font-black text-slate-800">1,960</span>
+                    </div>
+                    <div class="bg-blue-50/50 rounded-2xl p-4 border border-blue-100 flex flex-col items-center justify-center text-center">
+                        <span class="text-sm font-bold text-blue-600 mb-1">חלבון (41%)</span>
+                        <span class="text-3xl font-black text-slate-800">200<span class="text-lg text-slate-500 font-semibold ml-1">גרם</span></span>
+                    </div>
+                    <div class="bg-amber-50/50 rounded-2xl p-4 border border-amber-100 flex flex-col items-center justify-center text-center">
+                        <span class="text-sm font-bold text-amber-600 mb-1">פחמימה (52%)</span>
+                        <span class="text-3xl font-black text-slate-800">253<span class="text-lg text-slate-500 font-semibold ml-1">גרם</span></span>
+                    </div>
+                    <div class="bg-rose-50/50 rounded-2xl p-4 border border-rose-100 flex flex-col items-center justify-center text-center">
+                        <span class="text-sm font-bold text-rose-600 mb-1">שומן (7%)</span>
+                        <span class="text-3xl font-black text-slate-800">15.3<span class="text-lg text-slate-500 font-semibold ml-1">גרם</span></span>
+                    </div>
+                </div>
+
+                <!-- Meals List -->
+                <h3 class="text-xl font-bold text-slate-800 mt-8 mb-4">פירוט הארוחות והנשנוש היומי</h3>
+                <div class="space-y-4">
+                    
+                    <!-- Meal 1 -->
+                    <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-100 shadow-sm relative overflow-hidden">
+                        <div class="absolute left-0 top-0 bottom-0 w-2 bg-blue-400"></div>
+                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                            <div>
+                                <h4 class="text-lg font-black text-slate-800 mb-1">ארוחה 1: כריך טונה וירקות <span class="text-sm font-medium text-slate-400 font-normal">(בוקר)</span></h4>
+                                <ul class="list-disc list-inside text-slate-600 text-sm space-y-1.5 mt-3">
+                                    <li>פיתה אחת (כ-100 גרם)</li>
+                                    <li>קופסת טונה במים (כ-112 גרם משקל מסונן מנוזלים)</li>
+                                    <li>ירקות חתוכים לתוספת ולנפח: עגבנייה, מלפפון, מלפפון חמוץ וטבעות בצל</li>
+                                </ul>
+                            </div>
+                            <div class="bg-slate-50 rounded-2xl p-3 shrink-0 flex flex-row sm:flex-col gap-4 sm:gap-2 justify-between items-center sm:items-start border border-slate-100">
+                                <div class="text-center sm:text-right w-full">
+                                    <span class="block text-xs font-bold text-slate-400 uppercase">קלוריות</span>
+                                    <span class="block font-black text-slate-700">430</span>
+                                </div>
+                                <div class="flex gap-3 text-xs font-semibold text-slate-500 w-full justify-center sm:justify-start">
+                                    <span class="text-blue-600">P: 40g</span>
+                                    <span class="text-amber-600">C: 61g</span>
+                                    <span class="text-rose-600">F: 3g</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Meal 2 -->
+                    <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-100 shadow-sm relative overflow-hidden">
+                        <div class="absolute left-0 top-0 bottom-0 w-2 bg-indigo-400"></div>
+                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                            <div>
+                                <h4 class="text-lg font-black text-slate-800 mb-1">ארוחה 2: חזה עוף ופסטה <span class="text-sm font-medium text-slate-400 font-normal">(צהריים)</span></h4>
+                                <ul class="list-disc list-inside text-slate-600 text-sm space-y-1.5 mt-3">
+                                    <li>חזה עוף צרוב במחבת ללא שמן (250 גרם שקול נא), מתובל בפפריקה אדומה, מלח ופלפל חריף</li>
+                                    <li>פסטה מבושלת (90 גרם פסטה יבשה, כ-220 גרם לאחר בישול)</li>
+                                    <li>רוטב עגבניות ופטריות: 50 גרם רסק עגבניות מבושל עם פטריות טריות, בצל קצוץ ומים</li>
+                                    <li>תוספת ירק חם: שעועית ירוקה קפואה (150 גרם) מבושלת במים או מאודה עם מעט מלח</li>
+                                </ul>
+                            </div>
+                            <div class="bg-slate-50 rounded-2xl p-3 shrink-0 flex flex-row sm:flex-col gap-4 sm:gap-2 justify-between items-center sm:items-start border border-slate-100">
+                                <div class="text-center sm:text-right w-full">
+                                    <span class="block text-xs font-bold text-slate-400 uppercase">קלוריות</span>
+                                    <span class="block font-black text-slate-700">725</span>
+                                </div>
+                                <div class="flex gap-3 text-xs font-semibold text-slate-500 w-full justify-center sm:justify-start">
+                                    <span class="text-blue-600">P: 74.5g</span>
+                                    <span class="text-amber-600">C: 89g</span>
+                                    <span class="text-rose-600">F: 6g</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Meal 3 -->
+                    <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-100 shadow-sm relative overflow-hidden">
+                        <div class="absolute left-0 top-0 bottom-0 w-2 bg-purple-400"></div>
+                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                            <div>
+                                <h4 class="text-lg font-black text-slate-800 mb-1">ארוחה 3: פילה אמנון ובטטה <span class="text-sm font-medium text-slate-400 font-normal">(ערב)</span></h4>
+                                <ul class="list-disc list-inside text-slate-600 text-sm space-y-1.5 mt-3">
+                                    <li>פילה דג אמנון בתנור (2 יחידות, כ-250 גרם סה"כ), מתובלים במיץ לימון טרי, פטרוזיליה, פפריקה ומלח</li>
+                                    <li>בטטה אפויה בשלמותה (300 גרם, אפויה בנייר אפייה ללא תוספת שמן)</li>
+                                    <li>סלט ירקות טרי: עגבניות שרי, מלפפונים, פטרוזיליה, כוסברה ומיץ לימון טרי (ללא שמן)</li>
+                                </ul>
+                            </div>
+                            <div class="bg-slate-50 rounded-2xl p-3 shrink-0 flex flex-row sm:flex-col gap-4 sm:gap-2 justify-between items-center sm:items-start border border-slate-100">
+                                <div class="text-center sm:text-right w-full">
+                                    <span class="block text-xs font-bold text-slate-400 uppercase">קלוריות</span>
+                                    <span class="block font-black text-slate-700">560</span>
+                                </div>
+                                <div class="flex gap-3 text-xs font-semibold text-slate-500 w-full justify-center sm:justify-start">
+                                    <span class="text-blue-600">P: 57.5g</span>
+                                    <span class="text-amber-600">C: 73g</span>
+                                    <span class="text-rose-600">F: 5g</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Snack -->
+                    <div class="bg-white p-5 sm:p-6 rounded-3xl border border-slate-100 shadow-sm relative overflow-hidden">
+                        <div class="absolute left-0 top-0 bottom-0 w-2 bg-emerald-400"></div>
+                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                            <div>
+                                <h4 class="text-lg font-black text-slate-800 mb-1">נשנוש: משקה חלבון ופרי <span class="text-sm font-medium text-slate-400 font-normal">(בין ארוחות / סביב אימון)</span></h4>
+                                <ul class="list-disc list-inside text-slate-600 text-sm space-y-1.5 mt-3">
+                                    <li>משקה חלבון (בקבוק אחד, 330-250 מ"ל, 0% שומן)</li>
+                                    <li>פרי טרי (תפוח עץ בינוני או בננה, כ-120 גרם)</li>
+                                </ul>
+                            </div>
+                            <div class="bg-slate-50 rounded-2xl p-3 shrink-0 flex flex-row sm:flex-col gap-4 sm:gap-2 justify-between items-center sm:items-start border border-slate-100">
+                                <div class="text-center sm:text-right w-full">
+                                    <span class="block text-xs font-bold text-slate-400 uppercase">קלוריות</span>
+                                    <span class="block font-black text-slate-700">245</span>
+                                </div>
+                                <div class="flex gap-3 text-xs font-semibold text-slate-500 w-full justify-center sm:justify-start">
+                                    <span class="text-blue-600">P: 28g</span>
+                                    <span class="text-amber-600">C: 30g</span>
+                                    <span class="text-rose-600">F: 1.3g</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Guidelines -->
+                <div class="bg-amber-50 rounded-3xl p-6 sm:p-8 mt-6 border border-amber-100">
+                    <h3 class="text-lg font-bold text-amber-900 mb-4 flex items-center gap-2">
+                        <i data-lucide="alert-circle" class="w-5 h-5"></i> דגשי ביצוע והנחיות חשובות להצלחה
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="flex items-start gap-3 bg-white/60 p-4 rounded-2xl">
+                            <i data-lucide="flame-kindling" class="w-5 h-5 text-amber-600 shrink-0 mt-0.5"></i>
+                            <div>
+                                <h5 class="font-bold text-slate-800 text-sm mb-1">בישול ללא שמן</h5>
+                                <p class="text-xs text-slate-600">כל הצריבות והאפיות נעשות ללא שמן כלל, בעזרת מחבתות נון-סטיק ונייר אפייה.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 bg-white/60 p-4 rounded-2xl">
+                            <i data-lucide="droplet" class="w-5 h-5 text-blue-500 shrink-0 mt-0.5"></i>
+                            <div>
+                                <h5 class="font-bold text-slate-800 text-sm mb-1">שתיית נוזלים</h5>
+                                <p class="text-xs text-slate-600">לפחות 4-3.5 ליטר מים ביום לתמיכה בחילוף החומרים ובתחושת השובע.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 bg-white/60 p-4 rounded-2xl">
+                            <i data-lucide="chef-hat" class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5"></i>
+                            <div>
+                                <h5 class="font-bold text-slate-800 text-sm mb-1">תיבול חופשי ללא קלוריות</h5>
+                                <p class="text-xs text-slate-600">לימון טרי, מלח, פפריקה, שום, פלפל חריף ועשבי תיבול חופשיים ללא הגבלה.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 bg-white/60 p-4 rounded-2xl">
+                            <i data-lucide="ban" class="w-5 h-5 text-rose-500 shrink-0 mt-0.5"></i>
+                            <div>
+                                <h5 class="font-bold text-slate-800 text-sm mb-1">סינון מצרכים עתירי שומן</h5>
+                                <p class="text-xs text-slate-600">בשרים שמנים, גבינות, צ'יפס, עוגיות וסלטים תעשייתיים סוננו מהתפריט.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -497,8 +695,8 @@
                 <!-- Exercises List -->
                 <div class="space-y-3">
                     
-                    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-                        <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 shrink-0">1</div>
+                    <div onclick="openExerciseModal('bench-press')" class="cursor-pointer hover:border-indigo-300 hover:shadow-md transition-all bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4 group">
+                        <div class="w-12 h-12 bg-slate-50 group-hover:bg-indigo-50 group-hover:text-indigo-500 rounded-xl flex items-center justify-center text-slate-400 shrink-0 transition-colors">1</div>
                         <div class="flex-1">
                             <h4 class="font-bold text-slate-800 text-lg">לחיצת חזה</h4>
                             <p class="text-sm text-slate-500">סמית / משקולות / מכונה</p>
@@ -507,10 +705,11 @@
                             <span class="block text-sm font-bold text-slate-400">סטים</span>
                             <span class="block font-black text-slate-700 text-lg">3</span>
                         </div>
+                        <i data-lucide="chevron-left" class="w-5 h-5 text-slate-300 mr-2 group-hover:text-indigo-400 transition-colors"></i>
                     </div>
 
-                    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-                        <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 shrink-0">2</div>
+                    <div onclick="openExerciseModal('lat-pulldown')" class="cursor-pointer hover:border-indigo-300 hover:shadow-md transition-all bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4 group">
+                        <div class="w-12 h-12 bg-slate-50 group-hover:bg-indigo-50 group-hover:text-indigo-500 rounded-xl flex items-center justify-center text-slate-400 shrink-0 transition-colors">2</div>
                         <div class="flex-1">
                             <h4 class="font-bold text-slate-800 text-lg">פולי עליון</h4>
                             <p class="text-sm text-slate-500">מכונה / כבל אחיזה רחבה <span class="text-indigo-500 font-semibold">(כשל רק בסט אחרון, טכניקה זהה!)</span></p>
@@ -519,10 +718,11 @@
                             <span class="block text-sm font-bold text-slate-400">סטים</span>
                             <span class="block font-black text-slate-700 text-lg">3</span>
                         </div>
+                        <i data-lucide="chevron-left" class="w-5 h-5 text-slate-300 mr-2 group-hover:text-indigo-400 transition-colors"></i>
                     </div>
 
-                    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-                        <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 shrink-0">3</div>
+                    <div onclick="openExerciseModal('rowing')" class="cursor-pointer hover:border-indigo-300 hover:shadow-md transition-all bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4 group">
+                        <div class="w-12 h-12 bg-slate-50 group-hover:bg-indigo-50 group-hover:text-indigo-500 rounded-xl flex items-center justify-center text-slate-400 shrink-0 transition-colors">3</div>
                         <div class="flex-1">
                             <h4 class="font-bold text-slate-800 text-lg">חתירה</h4>
                             <p class="text-sm text-slate-500">צרה / רחבה</p>
@@ -531,10 +731,11 @@
                             <span class="block text-sm font-bold text-slate-400">סטים</span>
                             <span class="block font-black text-slate-700 text-lg">3</span>
                         </div>
+                        <i data-lucide="chevron-left" class="w-5 h-5 text-slate-300 mr-2 group-hover:text-indigo-400 transition-colors"></i>
                     </div>
 
-                    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-                        <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 shrink-0">4</div>
+                    <div onclick="openExerciseModal('dips-lateral')" class="cursor-pointer hover:border-indigo-300 hover:shadow-md transition-all bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4 group">
+                        <div class="w-12 h-12 bg-slate-50 group-hover:bg-indigo-50 group-hover:text-indigo-500 rounded-xl flex items-center justify-center text-slate-400 shrink-0 transition-colors">4</div>
                         <div class="flex-1">
                             <h4 class="font-bold text-slate-800 text-lg">מקבילים / הרחקות כתפיים</h4>
                             <p class="text-sm text-slate-500"><span class="text-indigo-500 font-semibold">כשל רק בסט אחרון, טכניקה זהה!</span></p>
@@ -543,10 +744,11 @@
                             <span class="block text-sm font-bold text-slate-400">סטים</span>
                             <span class="block font-black text-slate-700 text-lg">3</span>
                         </div>
+                        <i data-lucide="chevron-left" class="w-5 h-5 text-slate-300 mr-2 group-hover:text-indigo-400 transition-colors"></i>
                     </div>
 
-                    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-                        <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 shrink-0">5</div>
+                    <div onclick="openExerciseModal('romanian-deadlift')" class="cursor-pointer hover:border-indigo-300 hover:shadow-md transition-all bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4 group">
+                        <div class="w-12 h-12 bg-slate-50 group-hover:bg-indigo-50 group-hover:text-indigo-500 rounded-xl flex items-center justify-center text-slate-400 shrink-0 transition-colors">5</div>
                         <div class="flex-1">
                             <h4 class="font-bold text-slate-800 text-lg">כפיפת ברכיים / רומני</h4>
                             <p class="text-sm text-slate-500">עצירה מבוקרת בכיווץ</p>
@@ -555,10 +757,11 @@
                             <span class="block text-sm font-bold text-slate-400">סטים</span>
                             <span class="block font-black text-slate-700 text-lg">3</span>
                         </div>
+                        <i data-lucide="chevron-left" class="w-5 h-5 text-slate-300 mr-2 group-hover:text-indigo-400 transition-colors"></i>
                     </div>
 
-                    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-                        <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 shrink-0">6</div>
+                    <div onclick="openExerciseModal('pec-deck')" class="cursor-pointer hover:border-indigo-300 hover:shadow-md transition-all bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4 group">
+                        <div class="w-12 h-12 bg-slate-50 group-hover:bg-indigo-50 group-hover:text-indigo-500 rounded-xl flex items-center justify-center text-slate-400 shrink-0 transition-colors">6</div>
                         <div class="flex-1">
                             <h4 class="font-bold text-slate-800 text-lg">פרפר</h4>
                             <p class="text-sm text-slate-500">בקרוס / משקולות</p>
@@ -567,10 +770,11 @@
                             <span class="block text-sm font-bold text-slate-400">סטים</span>
                             <span class="block font-black text-slate-700 text-lg">3</span>
                         </div>
+                        <i data-lucide="chevron-left" class="w-5 h-5 text-slate-300 mr-2 group-hover:text-indigo-400 transition-colors"></i>
                     </div>
 
-                    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-                        <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 shrink-0">7</div>
+                    <div onclick="openExerciseModal('hack-squat')" class="cursor-pointer hover:border-indigo-300 hover:shadow-md transition-all bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4 group">
+                        <div class="w-12 h-12 bg-slate-50 group-hover:bg-indigo-50 group-hover:text-indigo-500 rounded-xl flex items-center justify-center text-slate-400 shrink-0 transition-colors">7</div>
                         <div class="flex-1">
                             <h4 class="font-bold text-slate-800 text-lg">האק סקוואט / פשיטת ברכיים / סקוואט בסמית</h4>
                             <p class="text-sm text-slate-500">לפי בחירה/זמינות</p>
@@ -579,10 +783,11 @@
                             <span class="block text-sm font-bold text-slate-400">סטים</span>
                             <span class="block font-black text-slate-700 text-lg">3</span>
                         </div>
+                        <i data-lucide="chevron-left" class="w-5 h-5 text-slate-300 mr-2 group-hover:text-indigo-400 transition-colors"></i>
                     </div>
 
-                    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
-                        <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 shrink-0">8</div>
+                    <div onclick="openExerciseModal('preacher-curl')" class="cursor-pointer hover:border-indigo-300 hover:shadow-md transition-all bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4 group">
+                        <div class="w-12 h-12 bg-slate-50 group-hover:bg-indigo-50 group-hover:text-indigo-500 rounded-xl flex items-center justify-center text-slate-400 shrink-0 transition-colors">8</div>
                         <div class="flex-1">
                             <h4 class="font-bold text-slate-800 text-lg">כפיפת מרפקים בכומר</h4>
                             <p class="text-sm text-slate-500">משיכה לחזה, עצירה למעלה</p>
@@ -591,6 +796,7 @@
                             <span class="block text-sm font-bold text-slate-400">סטים</span>
                             <span class="block font-black text-slate-700 text-lg">3</span>
                         </div>
+                        <i data-lucide="chevron-left" class="w-5 h-5 text-slate-300 mr-2 group-hover:text-indigo-400 transition-colors"></i>
                     </div>
 
                 </div>
@@ -609,6 +815,48 @@
 
         </main>
         
+    </div>
+
+    <!-- Exercise Detail Modal -->
+    <div id="exerciseModal" class="fixed inset-0 bg-slate-900/60 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="closeExerciseModal(event)">
+        <!-- Modal Content Box -->
+        <div id="exerciseModalContent" class="bg-white rounded-t-3xl sm:rounded-3xl w-full max-w-md overflow-hidden shadow-2xl transform translate-y-full sm:translate-y-0 sm:scale-95 transition-all duration-300 relative max-h-[90vh] flex flex-col" onclick="event.stopPropagation()">
+            
+            <!-- Drag Handle for Mobile -->
+            <div class="w-full flex justify-center py-3 sm:hidden">
+                <div class="w-12 h-1.5 bg-slate-200 rounded-full"></div>
+            </div>
+
+            <!-- Close button -->
+            <button onclick="closeExerciseModal()" class="absolute top-4 left-4 w-8 h-8 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-200 z-10 shadow-sm border border-slate-100">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+            
+            <!-- Image Area -->
+            <div class="bg-white p-6 flex justify-center border-b border-slate-100 relative overflow-hidden min-h-[250px] items-center">
+                <!-- Background decorative shapes -->
+                <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-200 via-transparent to-transparent"></div>
+                <img id="modalImage" src="" alt="Exercise" class="h-56 sm:h-64 object-contain mix-blend-multiply relative z-10 drop-shadow-lg">
+            </div>
+            
+            <!-- Info Area -->
+            <div class="p-6 overflow-y-auto flex-1">
+                <h2 id="modalTitle" class="text-2xl font-black text-slate-800 mb-1">...</h2>
+                <div class="flex items-center gap-1.5 mb-6">
+                    <span class="block w-2 h-2 rounded-full bg-indigo-500"></span>
+                    <p id="modalTarget" class="text-sm text-slate-500 font-medium">שריר עיקרי: ...</p>
+                </div>
+                
+                <h3 class="font-bold text-slate-700 mb-3 flex items-center gap-2">
+                    <i data-lucide="lightbulb" class="w-4 h-4 text-amber-500"></i> איך לבצע נכון:
+                </h3>
+                <div class="bg-indigo-50/50 rounded-2xl p-4 border border-indigo-50">
+                    <ul id="modalInstructions" class="space-y-3 text-sm text-slate-700">
+                        <!-- injected dynamically -->
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -647,6 +895,156 @@
             });
 
         });
+
+        // --- EXERCISE MODAL LOGIC ---
+        const exercisesData = {
+            'bench-press': {
+                title: 'לחיצת חזה',
+                target: 'חזה (Pectoralis Major)',
+                image: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Bench-Press.gif',
+                instructions: [
+                    'שכב על הספסל, רגליים נטועות היטב בקרקע.',
+                    'הורד את המשקל באופן מבוקר אל קו החזה.',
+                    'הקפד על כתפיים משוכות לאחור ומטה.',
+                    'דחוף את המשקל מעלה בתנועה חלקה עד ליישור (לא לנעול מרפקים).'
+                ]
+            },
+            'lat-pulldown': {
+                title: 'פולי עליון',
+                target: 'רחב גבי (Latissimus Dorsi)',
+                image: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Lat-Pulldown.gif',
+                instructions: [
+                    'שב עם חזה זקוף ורגליים מקובעות תחת הכריות.',
+                    'משוך את המוט לכיוון החזה העליון תוך הובלת התנועה עם המרפקים מטה.',
+                    'כווץ את השכמות בסוף התנועה.',
+                    'שחרר למעלה בצורה איטית ומבוקרת.'
+                ]
+            },
+            'rowing': {
+                title: 'חתירה',
+                target: 'גב אמצעי, רחב גבי (Rhomboids, Lats)',
+                image: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Row.gif',
+                instructions: [
+                    'שמור על חזה בחוץ וגב ישר לאורך כל התנועה.',
+                    'משוך את המשקל לכיוון הבטן/מותן התחתונה.',
+                    'קרב את השכמות זו לזו בשיא הכיווץ.',
+                    'חזור לעמדת המוצא בטמפו מבוקר.'
+                ]
+            },
+            'dips-lateral': {
+                title: 'מקבילים / הרחקות',
+                target: 'חזה תחתון ויד אחורית / כתף אמצעית',
+                image: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Triceps-Dips.gif',
+                instructions: [
+                    'מקבילים: רכן מעט קדימה כדי למקד בחזה, רד עד שנוצרת זווית של 90 מעלות במרפק.',
+                    'הרחקות: הרם את המשקולות הצידה עם כיפוף קל מאוד במרפק, אל תעבור את גובה הכתף.',
+                    'בשני התרגילים - עבודה איטית ולא להיעזר בתנופה (צ׳יטינג).'
+                ]
+            },
+            'romanian-deadlift': {
+                title: 'דדליפט רומני',
+                target: 'ירך אחורית וישבן (Hamstrings, Glutes)',
+                image: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Romanian-Deadlift.gif',
+                instructions: [
+                    'התחל בעמידה עם המוט קרוב לירכיים.',
+                    'שלח את הישבן לאחור עם ברכיים מעט כפופות.',
+                    'רד עד שאתה מרגיש מתיחה חזקה בירך האחורית, תוך שמירה על גב ישר.',
+                    'חזור לעמידה על ידי כיווץ הישבן ודחיפת האגן קדימה.'
+                ]
+            },
+            'pec-deck': {
+                title: 'פרפר',
+                target: 'חזה (Pectoralis Major - Isolation)',
+                image: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Pec-Deck-Fly.gif',
+                instructions: [
+                    'שב זקוף עם חזה בחוץ, מרפקים בגובה הכתפיים או מעט מתחת.',
+                    'סגור את הידיים בתנועת חיבוק גדולה.',
+                    'כווץ חזק את שרירי החזה בסוף התנועה.',
+                    'פתח חזרה לאט ללא הגעה למתיחת יתר כואבת בכתף.'
+                ]
+            },
+            'hack-squat': {
+                title: 'האק סקוואט',
+                target: 'ארבע ראשי (Quadriceps)',
+                image: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Hack-Squat.gif',
+                instructions: [
+                    'מקם את הגב והכתפיים היטב בכריות.',
+                    'מקם רגליים במרכז הפלטפורמה (או נמוך יותר למיקוד גדול יותר בארבע ראשי).',
+                    'רד עמוק תוך שליטה מלאה במשקל.',
+                    'דחוף מהעקבים/אמצע כף הרגל חזרה למעלה מבלי לנעול ברכיים.'
+                ]
+            },
+            'preacher-curl': {
+                title: 'כפיפת מרפקים בכומר',
+                target: 'יד קדמית (Biceps Brachii)',
+                image: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Z-Bar-Preacher-Curl.gif',
+                instructions: [
+                    'מקם את בית השחי והזרוע העליונה צמודים לכרית.',
+                    'אחוז במוט ורד למטה עד ליישור כמעט מלא (שמור על מתח).',
+                    'כווץ את היד הקדמית ומשוך מעלה.',
+                    'עצור לשנייה בשיא הכיווץ כדי למקסם את העבודה על השריר.'
+                ]
+            }
+        };
+
+        function openExerciseModal(exerciseId) {
+            const data = exercisesData[exerciseId];
+            if(!data) return;
+
+            // Populate data
+            document.getElementById('modalTitle').textContent = data.title;
+            document.getElementById('modalTarget').textContent = data.target;
+            document.getElementById('modalImage').src = data.image;
+            
+            const instList = document.getElementById('modalInstructions');
+            instList.innerHTML = '';
+            data.instructions.forEach(inst => {
+                const li = document.createElement('li');
+                li.className = 'flex items-start gap-2';
+                li.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-indigo-500 mt-0.5 shrink-0"></i> <span>${inst}</span>`;
+                instList.appendChild(li);
+            });
+
+            // Re-initialize lucide icons for the new elements
+            lucide.createIcons();
+
+            // Show modal
+            const modal = document.getElementById('exerciseModal');
+            const modalContent = document.getElementById('exerciseModalContent');
+            
+            modal.classList.remove('hidden');
+            // Trigger reflow
+            void modal.offsetWidth;
+            
+            modal.classList.remove('opacity-0');
+            // Responsive animations (bottom sheet for mobile, scale for desktop)
+            if (window.innerWidth < 640) {
+                modalContent.classList.remove('translate-y-full');
+            } else {
+                modalContent.classList.remove('sm:scale-95');
+            }
+        }
+
+        function closeExerciseModal(event) {
+            // Optional: Prevent closing if clicking inside the modal content
+            if (event && event.target.id !== 'exerciseModal' && event.target.closest('button') === null) {
+                 return;
+            }
+
+            const modal = document.getElementById('exerciseModal');
+            const modalContent = document.getElementById('exerciseModalContent');
+            
+            modal.classList.add('opacity-0');
+            if (window.innerWidth < 640) {
+                modalContent.classList.add('translate-y-full');
+            } else {
+                modalContent.classList.add('sm:scale-95');
+            }
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
     </script>
 </body>
 </html>
